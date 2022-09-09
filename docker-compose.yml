@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  db:
+    image: mariadb
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./server:/docker-entrypoint-initdb.d
+    container_name: rscir_pr1_db
+    environment:
+      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes
+  server:
+    build: ./server
+    restart: always
+    volumes:
+      - ./server:/var/www/html/
+    ports:
+      - "8088:80"
+    container_name: rscir_pr1_server
