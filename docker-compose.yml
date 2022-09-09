@@ -10,7 +10,7 @@ services:
       - ./server:/docker-entrypoint-initdb.d
     container_name: rscir_pr1_db
     environment:
-      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes
+      MARIADB_ROOT_PASSWORD: root
   server:
     build: ./server
     restart: always
