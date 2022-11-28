@@ -1,3 +1,7 @@
+<?php
+session_start();
+// require $_SERVER['DOCUMENT_ROOT'] .'/_helper.php';
+?>
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -8,7 +12,7 @@
 </head>
 
 <body>
-    <div id="wblock">
+    <div id="wblock" style = 'background-color: <?php echo $_SESSION['background_color'] ?>;'>
         <h1>Список пользователей</h1>
         <?php
         require_once '_helper.php';
@@ -29,7 +33,10 @@
                 <td>{$user['password']}</td>
             </tr>
             ";
-            }; ?>
+            }; 
+            echo 'Количество входов '.  $_SESSION['count_adds'] .'<br>';
+            echo 'Имя вошедшего '.  $_SESSION['login'] .'<br>';
+            ?>
         </table>
         <br><a href="index.html">На главную</a>
         <div>

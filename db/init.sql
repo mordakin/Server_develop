@@ -24,7 +24,11 @@ INSERT INTO users (name, password)
 VALUES
     (
         'login',
-        '$apr1$epobq07t$QlAR40n8JIhlPfgldEIXS.' -- password
+        'aaa' -- password
+    ),
+    (
+        'login2',
+        'bbb' -- password
     );
 -- Toys
 INSERT INTO toys (title, cost)
