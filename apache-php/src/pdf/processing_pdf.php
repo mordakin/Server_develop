@@ -2,31 +2,28 @@
 
 if($_FILES['file']){
     $uploaddir = $_SERVER['DOCUMENT_ROOT'].'/pdf/a/';
-            if (!empty($_FILES)) {
-                $error = "";
-                $fileName = $_FILES['file']['name'];
-                $fileSize = $_FILES['file']['size'];
-                $fileType = $_FILES['file']['type'];
-                $fileFormat = explode('/',$fileType)[1];
-                $fileExt = explode('.',$fileName);
-                $fileExt = strtolower(end($fileExt));
-                $expensions = array("pdf");
-                if(array_search($fileFormat, $expensions) === false) {
-                    $error = 'Неправильный формат файла'; 
-                }elseif ($fileSize == 0) {
-                    $error = 'Файл пустой';
-                }elseif($fileSize > 2097152){ // Биты
-                    $error = 'Файл > 2mb';  
-                }
-                if($error == ""){
-                    $fileTmp = $_FILES['file']['tmp_name'];
-                    $name = date("His");
-                    $fileName = $name.'.pdf';
-                    move_uploaded_file($fileTmp, $uploaddir.$fileName);
-                    header('Location: ' .'/pdf/upload.php');
-                }else{
-                    echo $error;
-                }
-            }else
-                echo "Нет файлов";
+    $ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+    $a  = $_FILES['file']['name'];
+    if ($ext != "pdf") {
+        echo "Это не pdf файл!!! Выберите  pdf для загрузки";
+    } else {
+        if (move_uploaded_file($_FILES['file']['tmp_name'], $uploaddir.$a)) {
+            exec('file ' . $uploaddir.$a, $ext);
+            $status = strripos($ext[0], 'pdf doc');
+            if ($status == True){
+                echo "Файл корректен и был успешно загружен.\n";
+            }
+            else {
+                $temp = array();
+                exec('rm ' . $uploaddir.$a, $temp);
+                echo "Вы загружаете файл с расширением pdf, но на самом деле его расширение: ";
+                echo mb_substr($ext[0], strripos($ext[0], ': ') + 2) . "</h3>";
+                echo "<h3>Не пытайтесь нас обмануть и выберите  pdf для загрузки!</h3>";
+            }
+            
+        }
+        else {
+            echo "Ошибочная загадка...\n";
+        }
+    }
 }
